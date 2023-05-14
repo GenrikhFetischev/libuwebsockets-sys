@@ -1,0 +1,18 @@
+[package]
+name = "libuwebsockets-sys"
+version = "0.0.2"
+authors = ["Genrikh Fetishchev <genrikhfetischev@gmail.com>"]
+description = "Native bindings to the uWebSockets CAPI"
+homepage = "https://github.com/GenrikhFetischev/libuwebsockets-sys"
+edition = "2021"
+build = "build.rs"
+links = "uwebsockets,uv,z,c++,ssl,crypto"
+license = "MIT"
+
+[features]
+uws_vendored = []
+
+[dependencies]
+
+[build-dependencies]
+bindgen = "0.65.1"
