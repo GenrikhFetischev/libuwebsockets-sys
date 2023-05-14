@@ -58,34 +58,73 @@ fn main() {
     panic!("Can't build UWS CAPI!");
   }
 
-  #[cfg(feature = "uws_vendored")]
-    let is_apple = host.contains("apple") && target.contains("apple");
+  let _ = Command::new("rm").current_dir(&capi_dir).arg("-f").arg("libuwebsockets.a").status().expect("failed to delete lib").success();
 
-  #[cfg(feature = "uws_vendored")]
-  if is_apple
-    && !Command::new("libtool")
-    .current_dir(&capi_dir)
-    .arg("-static")
-    .arg("-o")
-    .arg("libuwebsockets.a")
-    .arg("libuwebsockets.o")
-    .arg("../uSockets/uSockets.a")
-    .status()
-    .expect("Failed to run libtool")
-    .success()
-  {
-    panic!("Failed to pack libuwebsockets.a");
+  let is_apple = host.contains("apple") && target.contains("apple");
+  let is_linux = host.contains("linux") && target.contains("linux");
+
+
+  if is_apple {
+    println!("cargo:rustc-link-lib=c++");
+
+    #[cfg(feature = "uws_vendored")]
+    {
+      let status = Command::new("libtool")
+        .current_dir(&capi_dir)
+        .arg("-static")
+        .arg("-o")
+        .arg("libuwebsockets.a")
+        .arg("libuwebsockets.o")
+        .arg("../uSockets/uSockets.a")
+        .status()
+        .expect("Failed to run libtool")
+        .success();
+
+      if !status {
+        panic!("Failed to pack libuwebsockets.a");
+      }
+    }
   }
+
+  if is_linux {
+    println!("cargo:rustc-link-search=native=/usr/lib/gcc/aarch64-linux-gnu/11");
+    println!("cargo:rustc-link-lib=stdc++");
+
+    #[cfg(feature = "uws_vendored")]
+    {
+      let mut o_files = read_dir_by_condition(&us_dir, |file_name| file_name.ends_with(".o"));
+      let mut args = vec![
+        "rcs".to_string(),
+        "-o".to_string(),
+        capi_dir.join("libuwebsockets.a").to_str().unwrap().to_string(),
+        capi_dir.join("libuwebsockets.o").to_str().unwrap().to_string(),
+      ];
+      args.append(&mut o_files);
+
+      let status = Command::new("ar")
+        .current_dir(&out_dir)
+        .args(args)
+        .status()
+        .expect("Failed to pack libuwebsockets")
+        .success();
+
+      if !status {
+        panic!("Failed to pack libuwebsockets.a");
+      }
+    }
+
+
+    println!("cargo:rustc-link-lib=stdc++");
+    #[cfg(feature = "uws_vendored")]
+    println!("cargo:rustc-link-search=native={}", out_dir.display());
+    #[cfg(feature = "uws_vendored")]
+    println!("cargo:rustc-link-lib=uwebsockets");
+  }
+
 
   #[cfg(feature = "uws_vendored")]
   copy_by_condition(capi_dir, &out_dir, |filename| filename.ends_with(".a"));
 
-  #[cfg(feature = "uws_vendored")]
-  println!("cargo:rustc-link-search=native={}", out_dir.display());
-  #[cfg(feature = "uws_vendored")]
-  println!("cargo:rustc-link-lib=static=uwebsockets");
-
-  println!("cargo:rustc-link-lib=c++");
   println!("cargo:rustc-link-lib=z");
   println!("cargo:rustc-link-lib=uv");
   println!("cargo:rustc-link-lib=crypto");
@@ -116,3 +155,31 @@ fn copy_by_condition<T>(from: impl AsRef<Path>, to: impl AsRef<Path>, condition:
     fs::copy(&from, &to).unwrap();
   }
 }
+
+
+#[cfg(feature = "uws_vendored")]
+fn read_dir_by_condition<T>(dir: &Path, condition: T) -> Vec<String>
+  where
+    T: Fn(&str) -> bool + Sized + 'static,
+{
+  let mut res = Vec::new();
+  let entries = dir.read_dir().unwrap();
+  for entry in entries {
+    let entry = entry.unwrap();
+    if entry.file_type().unwrap().is_dir() {
+      continue;
+    }
+
+    let file_name = entry.file_name();
+    let file_name = file_name.to_str().unwrap();
+
+    if !condition(file_name) {
+      continue;
+    }
+
+    res.push(dir.join(file_name).to_str().unwrap().to_string());
+  }
+
+  res
+}
+
