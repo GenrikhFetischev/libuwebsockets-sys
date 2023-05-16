@@ -58,7 +58,6 @@ fn main() {
     panic!("Can't build UWS CAPI!");
   }
 
-  let _ = Command::new("rm").current_dir(&capi_dir).arg("-f").arg("libuwebsockets.a").status().expect("failed to delete lib").success();
 
   let is_apple = host.contains("apple") && target.contains("apple");
   let is_linux = host.contains("linux") && target.contains("linux");
@@ -92,6 +91,7 @@ fn main() {
 
     #[cfg(feature = "uws_vendored")]
     {
+      let _ = Command::new("rm").current_dir(&capi_dir).arg("-f").arg("libuwebsockets.a").status().expect("failed to delete lib").success();
       let mut o_files = read_dir_by_condition(&us_dir, |file_name| file_name.ends_with(".o"));
       let mut args = vec![
         "rcs".to_string(),
