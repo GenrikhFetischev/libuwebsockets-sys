@@ -1,6 +1,7 @@
+#[allow(clippy::all)]
+#[allow(non_upper_case_globals)]
 #[allow(warnings)]
 pub mod bindings {
-  #[allow(clippy::all)]
   include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
 }
 
