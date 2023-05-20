@@ -1,13 +1,13 @@
 [package]
 name = "libuwebsockets-sys"
-version = "0.0.6"
+version = "0.0.7"
 authors = ["Genrikh Fetishchev <genrikhfetischev@gmail.com>"]
-description = "Native bindings to the uWebSockets CAPI"
+description = "Bindings to the uWebSockets CAPI"
 homepage = "https://github.com/GenrikhFetischev/libuwebsockets-sys"
 edition = "2021"
-build = "build.rs"
-links = "uwebsockets,uv,z,ssl,crypto"
+links = "uwebsockets"
 license = "MIT"
+keywords = ["http", "websocket", "server", "uwebsockets"]
 
 [features]
 uws_vendored = []

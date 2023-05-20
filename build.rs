@@ -1,8 +1,9 @@
 use std::env;
 #[cfg(feature = "uws_vendored")]
 use std::path::{Path};
-use std::path::{PathBuf};
+#[cfg(feature = "uws_vendored")]
 use std::process::Command;
+use std::path::{PathBuf};
 
 fn main() {
   let host = env::var("HOST").unwrap();
@@ -12,7 +13,9 @@ fn main() {
     panic!("Windows is not currently supported");
   }
 
+  #[cfg(feature = "uws_vendored")]
   let is_apple = host.contains("apple") && target.contains("apple");
+  #[cfg(feature = "uws_vendored")]
   let is_linux = host.contains("linux") && target.contains("linux");
 
 
@@ -31,20 +34,6 @@ fn main() {
     .expect("Unable to generate bindings")
     .write_to_file(out_dir.join("bindings.rs"))
     .expect("Couldn't write bindings!");
-
-
-  println!("cargo:rustc-link-lib=z");
-  println!("cargo:rustc-link-lib=uv");
-  println!("cargo:rustc-link-lib=ssl");
-  println!("cargo:rustc-link-lib=crypto");
-
-
-  if is_apple {
-    println!("cargo:rustc-link-lib=c++");
-  } else if is_linux {
-    println!("cargo:rustc-link-lib=stdc++");
-  }
-
 
   // Remove libuwebsockets.a built by make because to my understanding it has packed in a wrong way
   #[cfg(feature = "uws_vendored")]
