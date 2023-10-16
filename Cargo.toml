@@ -1,6 +1,6 @@
 [package]
 name = "libuwebsockets-sys"
-version = "0.0.7"
+version = "0.0.8"
 authors = ["Genrikh Fetishchev <genrikhfetischev@gmail.com>"]
 description = "Bindings to the uWebSockets CAPI"
 homepage = "https://github.com/GenrikhFetischev/libuwebsockets-sys"
@@ -15,4 +15,4 @@ uws_vendored = []
 [dependencies]
 
 [build-dependencies]
-bindgen = "0.65.1"
+bindgen = "0.68.1"
