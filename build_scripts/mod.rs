@@ -20,6 +20,7 @@ mod build_z;
 #[cfg(feature = "openssl_vendored")]
 mod build_openssl;
 
+#[cfg(any(feature = "uws_vendored", feature = "uv_vendored", feature = "z_vendored", feature = "openssl_vendored"))]
 mod utils;
 
 fn main() {

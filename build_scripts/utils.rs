@@ -1,4 +1,4 @@
-use std::{fs, io};
+use std::fs;
 use std::path::Path;
 
 pub fn copy_by_condition<T>(from: impl AsRef<Path>, to: impl AsRef<Path>, condition: T)
@@ -25,6 +25,7 @@ pub fn copy_by_condition<T>(from: impl AsRef<Path>, to: impl AsRef<Path>, condit
 }
 
 
+#[cfg(feature = "uws_vendored")]
 pub fn read_dir_by_condition<T>(dir: &Path, condition: T) -> Vec<String>
   where
     T: Fn(&str) -> bool + Sized + 'static,
@@ -50,8 +51,8 @@ pub fn read_dir_by_condition<T>(dir: &Path, condition: T) -> Vec<String>
   res
 }
 
-
-pub fn create_folder_if_not_exists(folder_path: &Path) -> Result<(), io::Error> {
+#[cfg(feature = "uv_vendored")]
+pub fn create_folder_if_not_exists(folder_path: &Path) -> Result<(), fs::io::Error> {
   if !fs::metadata(folder_path).is_ok() {
     fs::create_dir(folder_path)
   } else {
