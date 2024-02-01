@@ -52,7 +52,7 @@ pub fn read_dir_by_condition<T>(dir: &Path, condition: T) -> Vec<String>
 }
 
 #[cfg(feature = "uv_vendored")]
-pub fn create_folder_if_not_exists(folder_path: &Path) -> Result<(), fs::io::Error> {
+pub fn create_folder_if_not_exists(folder_path: &Path) -> Result<(), std::io::Error> {
   if !fs::metadata(folder_path).is_ok() {
     fs::create_dir(folder_path)
   } else {
