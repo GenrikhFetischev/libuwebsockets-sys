@@ -14,6 +14,7 @@ build = "build_scripts/mod.rs"
 uws_vendored = []
 z_vendored = []
 uv_vendored = []
+openssl_vendored = []
 
 [dependencies]
 

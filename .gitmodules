@@ -7,3 +7,6 @@
 [submodule "libuv"]
 	path = libuv
 	url = https://github.com/libuv/libuv
+[submodule "openssl"]
+	path = openssl
+	url = https://github.com/openssl/openssl

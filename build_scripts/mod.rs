@@ -1,19 +1,24 @@
 use std::env;
 use std::path::PathBuf;
 
-// #[cfg(feature = "uv_vendored")]
+#[cfg(feature = "openssl_vendored")]
+use crate::build_openssl::build_openssl;
+#[cfg(feature = "uv_vendored")]
 use crate::build_uv::build_uv;
 #[cfg(feature = "uws_vendored")]
 use crate::build_uwebsockets::build_uwebsockets;
 #[cfg(feature = "z_vendored")]
 use crate::build_z::build_z;
 
-// #[cfg(feature = "uv_vendored")]
+#[cfg(feature = "uv_vendored")]
 mod build_uv;
 #[cfg(feature = "uws_vendored")]
 mod build_uwebsockets;
 #[cfg(feature = "z_vendored")]
 mod build_z;
+
+#[cfg(feature = "openssl_vendored")]
+mod build_openssl;
 
 mod utils;
 
@@ -49,7 +54,10 @@ fn main() {
   #[cfg(feature = "z_vendored")]
   build_z();
 
-  // #[cfg(feature = "uv_vendored")]
+  #[cfg(feature = "uv_vendored")]
   build_uv();
+
+  #[cfg(feature = "openssl_vendored")]
+  build_openssl();
 }
 

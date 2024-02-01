@@ -5,7 +5,6 @@ pub fn copy_by_condition<T>(from: impl AsRef<Path>, to: impl AsRef<Path>, condit
   where
     T: Fn(&str) -> bool + Sized + 'static,
 {
-  use std::fs;
   let entries = from.as_ref().read_dir().unwrap();
   for entry in entries {
     let entry = entry.unwrap();
