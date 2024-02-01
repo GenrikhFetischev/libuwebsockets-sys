@@ -13,6 +13,7 @@ build = "build_scripts/mod.rs"
 [features]
 uws_vendored = []
 z_vendored = []
+uv_vendored = []
 
 [dependencies]
 
