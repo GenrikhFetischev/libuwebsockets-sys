@@ -14,6 +14,16 @@ pub fn build_uv() {
   create_folder_if_not_exists(&uv_build_dir).expect("Can't create build folder for libuv!");
 
   if !Command::new("cmake")
+    .current_dir(&uv_build_dir)
+    .arg("..")
+    .arg("-DBUILD_TESTING=OFF")
+    .status()
+    .expect("Failed to execute cmake").success() {
+    panic!("Can't prepare build directory for libuv!");
+  }
+
+
+  if !Command::new("cmake")
     .current_dir(&uv_dir)
     .arg("--build")
     .arg("build")
