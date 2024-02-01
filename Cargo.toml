@@ -5,14 +5,18 @@ authors = ["Genrikh Fetishchev <genrikhfetischev@gmail.com>"]
 description = "Bindings to the uWebSockets CAPI"
 homepage = "https://github.com/GenrikhFetischev/libuwebsockets-sys"
 edition = "2021"
-links = "uwebsockets"
+links = "uwebsockets, z, uv, crypto, ssl"
 license = "MIT"
 keywords = ["http", "websocket", "server", "uwebsockets"]
+build = "build_scripts/mod.rs"
 
 [features]
 uws_vendored = []
+z_vendored = []
+uv_vendored = []
+openssl_vendored = []
 
 [dependencies]
 
 [build-dependencies]
-bindgen = "0.68.1"
+bindgen = "0.69.2"

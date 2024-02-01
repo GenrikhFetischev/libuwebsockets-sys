@@ -1,3 +1,12 @@
 [submodule "uWebSockets"]
 	path = uWebSockets
 	url = https://github.com/uNetworking/uWebSockets
+[submodule "zlib"]
+	path = zlib
+	url = https://github.com/madler/zlib
+[submodule "libuv"]
+	path = libuv
+	url = https://github.com/libuv/libuv
+[submodule "openssl"]
+	path = openssl
+	url = https://github.com/openssl/openssl
