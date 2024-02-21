@@ -2,7 +2,7 @@
 
 ## Usage
 
-In order to use uWebSockets in your Rust application you will have to link the following static libraries to you
+In order to use uWebSockets in your Rust application you will have to install and link the following static libraries to you
 binary - `libz`, `libuv`, `libssl`, `libcrypto` and `libstdc++`.
 
 It may look something like that in your build.rs file:
