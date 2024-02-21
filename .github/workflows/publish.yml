@@ -1,7 +1,6 @@
 name: Publish to crates.io
 
 on:
-  push:
   release:
     types:
       - created
@@ -22,7 +21,7 @@ jobs:
       - uses: katyo/publish-crates@v2
         with:
           registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
-          dry-run: true
+
 
 
 
