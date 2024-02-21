@@ -1,6 +1,7 @@
 name: Publish to crates.io
 
 on:
+  push:
   release:
     types:
       - created
@@ -10,9 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-        with:
-          submodules: 'recursive'
-          fetch-depth: 1
+      - name: Pull uWebSockets
+        run: git submodule update --init uWebSockets
+      - name: Pull uSockets
+        run: cd uWebSockets && git submodule update --init uSockets
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
@@ -20,6 +22,8 @@ jobs:
       - uses: katyo/publish-crates@v2
         with:
           registry-token: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+          dry-run: true
+
 
 
 
