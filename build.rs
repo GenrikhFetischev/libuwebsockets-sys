@@ -29,7 +29,7 @@ fn main() {
   bindgen::Builder::default()
     .clang_arg(format!("-I{}", us_dir.join("src").display()))
     .header(capi_dir.join("libuwebsockets.h").display().to_string())
-    .parse_callbacks(Box::new(bindgen::CargoCallbacks))
+    .parse_callbacks(Box::new(bindgen::CargoCallbacks::new()))
     .generate()
     .expect("Unable to generate bindings")
     .write_to_file(out_dir.join("bindings.rs"))
