@@ -1,6 +1,6 @@
 [package]
 name = "libuwebsockets-sys"
-version = "0.0.9"
+version = "0.0.10"
 authors = ["Genrikh Fetishchev <genrikhfetischev@gmail.com>"]
 description = "Bindings to the uWebSockets CAPI"
 homepage = "https://github.com/GenrikhFetischev/libuwebsockets-sys"
