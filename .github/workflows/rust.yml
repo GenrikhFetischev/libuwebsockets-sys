@@ -1,21 +1,25 @@
-name: Rust
-
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+  push:
+    branches:
+      - main
 
-env:
-  CARGO_TERM_COLOR: always
+
+name: Clippy
 
 jobs:
-  Bless:
-
-    runs-on: rust:latest
-
+  clippy:
+    name: Clippy
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: lint
-      run: cargo clippy --release -- -D warnings
-
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          components: clippy
+          override: true
+      - uses: actions-rs/clippy-check@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --all-features --release -- -D warnings
+          name: Clippy Output
